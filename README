@@ -1,0 +1,7 @@
+Asana cli
+=========
+
+ - List tasks from a default workspace-project-section
+ - Allow adding tasks to the default workspace-project-section
+ - Allow overriding of default workspace project and section
+ - Cache tasks so that list works without an internet connection
