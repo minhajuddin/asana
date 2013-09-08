@@ -17,8 +17,15 @@ func get(payload interface{}, urlTokens ...string) error {
 	if err != nil {
 		log.Println("HTTP error", err)
 	}
+	if r.StatusCode != 200 {
+		log.Println("ERROR", r)
+	}
 	dec := json.NewDecoder(r.Body)
-	return dec.Decode(&payload)
+	err = dec.Decode(&payload)
+	if err != nil {
+		log.Println("error in decoding", err)
+	}
+	return err
 }
 
 func urlFor(args ...string) string {
