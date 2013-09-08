@@ -15,12 +15,12 @@ type ProjectPayload struct {
 
 func getProjects() []Project {
 	p := ProjectPayload{}
-	get("projects")
+	get(&p, "projects")
 	return p.Data
 }
 
 func listProjects() {
-	for _, project := range getProjects() {
-		fmt.Println(project)
+	for i, project := range getProjects() {
+		fmt.Printf("%02d) %s\n", i+1, project.Name)
 	}
 }

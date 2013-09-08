@@ -65,5 +65,5 @@ func urlFor(args ...string) string {
 
 func main() {
 	readConfig()
-	log.Println(getProjects())
+	listProjects()
 }
