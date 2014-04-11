@@ -5,26 +5,17 @@ import (
 )
 
 type Project struct {
-	Id   int64  `id`
-	Name string `name`
+	Id        int64  `id`
+	Name      string `name`
+	Workspace string `workspace`
 }
 
 type ProjectPayload struct {
 	Data []Project `data`
 }
 
-func getProjects(cache bool) []Project {
+func getProjects(workspace Workspace) []Project {
 	p := ProjectPayload{}
-	get(&p, "projects")
-	cacheProjects(p.Data)
+	get(&p, fmt.Sprintf("workspaces/%v/projects", workspace.Id))
 	return p.Data
-}
-
-func listProjects() {
-	for i, project := range getProjects(true) {
-		fmt.Printf("%02d) %s (%v)\n", i+1, project.Name, project.Id)
-	}
-}
-
-func cacheProjects(projects []Project) {
 }

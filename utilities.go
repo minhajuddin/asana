@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os/user"
-	"path"
+	//"os/user"
+	//"path"
 	"strings"
 )
 
@@ -14,7 +14,7 @@ const BASE_URL = "https://app.asana.com/api/1.0"
 func get(payload interface{}, urlTokens ...string) error {
 	url := urlFor(urlTokens...)
 	request, _ := http.NewRequest("GET", url, nil)
-	request.SetBasicAuth(config.ApiKey, "")
+	request.SetBasicAuth(config.Key, "")
 	r, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Println("HTTP error", err)
@@ -34,13 +34,13 @@ func urlFor(args ...string) string {
 	return strings.Join([]string{BASE_URL, strings.Join(args, "/")}, "/")
 }
 
-func relativeFromHome(args ...string) string {
-	hd := []string{HOME_DIR}
-	hd = append(hd, args...)
-	return path.Join(hd...)
-}
+//func relativeFromHome(args ...string) string {
+//hd := []string{HOME_DIR}
+//hd = append(hd, args...)
+//return path.Join(hd...)
+//}
 
-var HOME_DIR string
+//var HOME_DIR string
 
 func logIfError(err error) {
 	if err != nil {
@@ -48,9 +48,9 @@ func logIfError(err error) {
 	}
 }
 
-func initialize() {
-	HOME_DIR, err := user.Current()
-	if err != nil {
-		log.Panicln("Unable to get user info", err)
-	}
-}
+//func initialize() {
+//HOME_DIR, err := user.Current()
+//if err != nil {
+//log.Panicln("Unable to get user info", err)
+//}
+//}

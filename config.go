@@ -2,22 +2,22 @@ package main
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"os"
+	"path"
 )
 
-type Config struct {
-	ApiKey string `apiKey`
+var config struct {
+	Key string `json:"key"`
 }
 
-var config Config
+func loadConfig() {
+	homeDir := os.Getenv("HOME")
+	bytes, err := ioutil.ReadFile(path.Join(homeDir, ".asana.json"))
 
-func readConfig() {
-	file, err := os.Open(relativeFromHome(".asana-config.json"))
 	if err != nil {
-		log.Panicln("Unable to open config file", err)
+		log.Fatalln(err, "config file not found")
 	}
-	dec := json.NewDecoder(file)
-	config = Config{}
-	dec.Decode(&config)
+	json.Unmarshal(bytes, &config)
 }
