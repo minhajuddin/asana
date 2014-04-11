@@ -1,19 +1,15 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
 	loadConfig()
-	fmt.Println(config.Key)
+	loadProjects()
 	//-r should refresh the metadata
 	//i.e. the workspaces and project list
 	//and it should run in the background after showing the list
 	//of tasks if lastmod of the cache file is > 1.day
 	//getMeta()
 	//listProjects()
-	listWorkspaces()
+	//listWorkspaces()
 }
 
 //func initialize() {
