@@ -34,23 +34,8 @@ func urlFor(args ...string) string {
 	return strings.Join([]string{BASE_URL, strings.Join(args, "/")}, "/")
 }
 
-//func relativeFromHome(args ...string) string {
-//hd := []string{HOME_DIR}
-//hd = append(hd, args...)
-//return path.Join(hd...)
-//}
-
-//var HOME_DIR string
-
-func logIfError(err error) {
+func handleError(err error) {
 	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 }
-
-//func initialize() {
-//HOME_DIR, err := user.Current()
-//if err != nil {
-//log.Panicln("Unable to get user info", err)
-//}
-//}

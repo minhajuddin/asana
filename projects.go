@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"os"
+	"path"
 	"strconv"
 )
 
@@ -14,7 +14,26 @@ type Project struct {
 	WorkspaceID int64
 }
 
+type Task struct {
+	ID   int64
+	Name string
+}
+
+func (p *Project) tasks() []Task {
+	tasks := make([]Task, 0, 100)
+	tasksJson := NameIDResponse{}
+	get(&tasksJson, "projects", strconv.FormatInt(p.ID, 10), "tasks")
+	for _, tj := range tasksJson.Data {
+		tasks = append(tasks, Task{ID: tj.ID, Name: tj.Name})
+	}
+	return tasks
+}
+
 type Projects []Project
+
+func (p Projects) find(match string) *Project {
+	return &p[0]
+}
 
 type NameIDResponse struct {
 	Data []struct {
@@ -23,13 +42,25 @@ type NameIDResponse struct {
 	} `data`
 }
 
+var projects Projects
+
 func loadProjects() {
 	//TODO: fetch
-	projects := fetchProjects()
-	file, err := os.OpenFile("/tmp/asana.js", os.O_RDWR|os.O_CREATE, 0600)
-	if err != nil {
-		log.Fatal(err)
+	cachePath := path.Join(ASANA_DIR, "projects.json")
+	_, err := os.Stat(cachePath)
+	//if cached load from file
+	if err == nil {
+		projects = make(Projects, 0, 100)
+		file, err := os.Open(cachePath)
+		handleError(err)
+		decoder := json.NewDecoder(file)
+		err = decoder.Decode(&projects)
+		handleError(err)
+		return
 	}
+	projects = fetchProjects()
+	file, err := os.OpenFile(cachePath, os.O_RDWR|os.O_CREATE, 0600)
+	handleError(err)
 	encoder := json.NewEncoder(file)
 	encoder.Encode(projects)
 }

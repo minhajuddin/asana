@@ -1,18 +1,20 @@
 package main
 
-func main() {
-	loadConfig()
-	loadProjects()
-	//-r should refresh the metadata
-	//i.e. the workspaces and project list
-	//and it should run in the background after showing the list
-	//of tasks if lastmod of the cache file is > 1.day
-	//getMeta()
-	//listProjects()
-	//listWorkspaces()
-}
+import (
+	"fmt"
+	"os"
+)
 
-//func initialize() {
-//cachePath := relativeFromHome(".asana")
-//os.Mkdir(cachePath, os.)
-//}
+func main() {
+	fmt.Println("doing it")
+	loadConfig()
+	//-r should refresh the metadata
+	loadProjects()
+	//TODO handle invalid args
+	match := os.Args[1]
+	//TODO handle match not found
+	project := projects.find(match)
+	for _, t := range project.tasks() {
+		fmt.Println(t.Name)
+	}
+}
