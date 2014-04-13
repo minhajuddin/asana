@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -14,11 +15,14 @@ func main() {
 		fmt.Println("Invalid number of args")
 		os.Exit(1)
 	}
-	match := os.Args[1]
-	//TODO handle match not found
+	match := strings.Join(os.Args[1:], " ")
 	project := projects.find(match)
-	fmt.Println("Showing tasks for ", project.Name)
-	for _, t := range project.tasks() {
-		fmt.Println(t.Name)
+	if project == nil {
+		fmt.Println("Project not found")
+		os.Exit(2)
+	}
+	fmt.Printf("Showing tasks for %v/%v:\n", project.Workspace, project.Name)
+	for i, t := range project.tasks() {
+		fmt.Printf("%v. %v\n", i+1, t.Name)
 	}
 }
