@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 )
 
 type Project struct {
@@ -31,8 +32,13 @@ func (p *Project) tasks() []Task {
 
 type Projects []Project
 
-func (p Projects) find(match string) *Project {
-	return &p[0]
+func (projects Projects) find(match string) *Project {
+	for _, p := range projects {
+		if strings.Contains(strings.ToLower(p.Name), strings.ToLower(match)) {
+			return &p
+		}
+	}
+	return nil
 }
 
 type NameIDResponse struct {
