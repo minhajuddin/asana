@@ -12,23 +12,29 @@ func main() {
 	parseOptions()
 }
 
-func list() {
+func list(args []string) {
 	loadProjects()
-	match := strings.Join(os.Args[2:], " ")
-	fmt.Println(match)
+	match := strings.Join(args, " ")
 	project := projects.find(match)
-	if project == nil {
-		fmt.Println("Project not found")
-		os.Exit(2)
-	}
 	fmt.Printf("Showing tasks for %v/%v:\n", project.Workspace, project.Name)
 	for i, t := range project.tasks() {
 		fmt.Printf("%v. %v\n", i+1, t.Name)
 	}
 }
 
-var commands = map[string]func(){
+func add(args []string) {
+	if len(args) < 2 {
+		fmt.Println("add needs 2 arguments")
+		os.Exit(2)
+	}
+	loadProjects()
+	project := projects.find(args[0])
+	project.addTask(strings.Join(args[1:], " "))
+}
+
+var commands = map[string]func([]string){
 	"list": list,
+	"add":  add,
 }
 
 func parseOptions() {
@@ -40,7 +46,7 @@ func parseOptions() {
 	if !ok {
 		invalidArgsHandler()
 	}
-	command()
+	command(os.Args[2:])
 }
 
 func invalidArgsHandler() {

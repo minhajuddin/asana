@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path"
 	"strconv"
@@ -18,6 +19,15 @@ type Project struct {
 type Task struct {
 	ID   int64
 	Name string
+}
+
+func (p *Project) addTask(name string) {
+	form := struct {
+		Name      string  `json:"name"`
+		Workspace int64   `json:"workspace"`
+		Projects  []int64 `json:"projects"`
+	}{name, p.WorkspaceID, []int64{p.ID}}
+	post(form, "tasks")
 }
 
 func (p *Project) tasks() []Task {
@@ -38,6 +48,8 @@ func (projects Projects) find(match string) *Project {
 			return &p
 		}
 	}
+	fmt.Printf("Project '%v' not found\n", match)
+	os.Exit(2)
 	return nil
 }
 
