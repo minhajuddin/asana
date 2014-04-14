@@ -1,6 +1,19 @@
 Asana cli
 =========
 
+Done
+====
+  - Ability to list tasks in a project, run: 'asana list <unique-project-name-fragment>' 
+    e.g.  asana list simple site
+          asana list site #it lists the first project which matches this name
+
+  - Ability to add tasks to a project, run: 'asana add  <unique-project-name-fragment> This is an awesome task'
+    e.g.  asana add 'Simple Site' This is an awesome task
+          asana add site This is an awesome task
+
+TODO
+====
+
  - Return fast
  - Ability to add tasks
  - Set default
